@@ -48,11 +48,8 @@ const Game = (function () {
     myobj.playedBy = activePlayer;
     activePlayer.regPlayedCell(cellChosen);
     console.log(activePlayer.getGame());
-    result = checkResults(activePlayer.getGame());
+    checkResults(activePlayer.getGame());
     console.log(result);
-    if (result) {
-      alert(`End of the Game, ${activePlayer.name} Wins!!`);
-    }
 
     activePlayer == PlayerX
       ? (activePlayer = PlayerO)
@@ -61,7 +58,7 @@ const Game = (function () {
   }
 
   function checkResults(playerGame) {
-    let result = false;
+    result = false;
     if (playerGame.length > 2) {
       const winningCombos = [
         [1, 2, 3],
@@ -85,11 +82,23 @@ const Game = (function () {
           return playerGame.includes(value);
         });
       }
+      if (result) {
+        alert(`End of the Game, ${activePlayer.name} Wins!!`);
+        location.reload();
+      } else if (result == false && activePlayer.getGame().length > 4) {
+        alert(`End of the Game, It's a Tie!!`);
+        location.reload();
+      }
     }
+
     return result;
   }
 
-  return { newGame, newPlay };
+  const checkCell = (cellChosen) => {
+    return gameboard.find((element) => element.id == cellChosen).available;
+  };
+
+  return { newGame, newPlay, checkCell };
 })();
 
 const displayController = (function () {
@@ -109,7 +118,11 @@ const displayController = (function () {
         : (cell.innerHTML = element.playedBy.id);
       gameBoardDisplay.appendChild(cell);
 
-      cell.addEventListener("click", () => Game.newPlay(cell.id));
+      cell.addEventListener("click", () => {
+        Game.checkCell(cell.id)
+          ? Game.newPlay(cell.id)
+          : alert("Choose an empty Cell");
+      });
     });
   };
 
