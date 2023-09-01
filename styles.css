@@ -1,0 +1,15 @@
+#display {
+  display: grid;
+  grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+  gap: 1rem;
+  width: 50vw;
+  height: 50vh;
+  margin: 3rem;
+}
+
+.cell {
+  display: flex;
+  background-color: aliceblue;
+  justify-content: center;
+  align-items: center;
+}
